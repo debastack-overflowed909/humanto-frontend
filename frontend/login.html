@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanto — Sign in to your workplace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for smooth modern UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Font: Inter & Plus Jakarta Sans for refined typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        warm: {
+                            50: '#FAF8F5',
+                            100: '#F5F2EC',
+                            200: '#E8E3D8',
+                            300: '#D5CDBF',
+                            400: '#B2A795',
+                            500: '#8C7F6B',
+                            600: '#685D4D',
+                            700: '#4D4438',
+                            800: '#332D25',
+                            900: '#1F1B16',
+                            950: '#120F0C',
+                        },
+                        brand: {
+                            coral: '#FF6B50',
+                            coralLight: '#FFF0ED',
+                            terracotta: '#E05338',
+                            sand: '#F7F4EF',
+                            dark: '#18181B',
+                            accent: '#F38A61'
+                        }
+                    },
+                    boxShadow: {
+                        'soft-glow': '0 20px 40px -15px rgba(24, 24, 27, 0.07), 0 0 1px 1px rgba(24, 24, 27, 0.05)',
+                        'card': '0 24px 60px -12px rgba(28, 25, 23, 0.08), 0 0 0 1px rgba(28, 25, 23, 0.06)',
+                        'btn': '0 2px 4px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+                        },
+                        pulseSubtle: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.8' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-6px)' },
+                            '40%, 80%': { transform: 'translateX(6px)' },
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'pulse-subtle': 'pulseSubtle 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shake': 'shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body class="h-full bg-warm-50 bg-mesh text-warm-900 flex flex-col justify-between selection:bg-brand-coral selection:text-white relative overflow-x-hidden">
+
+    <!-- Background Animated Decorative Elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-brand-coralLight/60 rounded-full blur-3xl animate-pulse-subtle"></div>
+        <div class="absolute top-1/3 -right-24 w-80 h-80 bg-warm-200/50 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute -bottom-20 left-1/4 w-96 h-96 bg-orange-100/40 rounded-full blur-3xl"></div>
+        
+        <!-- Subtle grid pattern overlay -->
+        <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-40"></div>
+    </div>
+
+    <!-- Navigation / Header -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2.5 group">
+            <div class="w-9 h-9 rounded-xl bg-warm-900 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:scale-105 transition-transform duration-200">
+                <span class="text-brand-coral">h</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-bold text-xl tracking-tight text-warm-900 flex items-center gap-1.5">
+                    humanto
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-brand-coral"></span>
+                </span>
+            </div>
+        </a>
+
+        <!-- Header Links/Help -->
+        <div class="flex items-center gap-4 text-xs sm:text-sm font-medium">
+            <span class="text-warm-600 hidden sm:inline-block">Need help setting up?</span>
+            <a href="#" class="text-warm-900 hover:text-brand-coral transition-colors flex items-center gap-1 font-semibold">
+                <i class="ph ph-question text-base"></i> Support
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 my-auto py-8 px-4 sm:px-6 flex flex-col items-center justify-center">
+        
+        <div class="w-full max-w-[440px]">
+            <!-- Toast Dynamic Notification -->
+            <div id="toast-notification" class="hidden mb-4 p-4 rounded-xl bg-warm-900 text-white shadow-xl transition-all duration-300 transform flex items-start gap-3 border border-warm-800">
+                <i id="toast-icon" class="ph ph-check-circle text-brand-coral text-xl shrink-0 mt-0.5"></i>
+                <div class="text-xs sm:text-sm">
+                    <p id="toast-title" class="font-semibold text-white">Action successful</p>
+                    <p id="toast-msg" class="text-warm-300 mt-0.5">Redirecting to your workspace...</p>
+                </div>
+            </div>
+
+            <!-- Main Card -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-card border border-white/80 relative">
+                
+                <!-- Card Header -->
+                <div class="text-center mb-6">
+                    <!-- Workspace indicator badge -->
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-warm-100 border border-warm-200/80 text-warm-700 text-xs font-medium mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        ACME Corp Workplace
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-warm-900" id="form-heading">
+                        Sign in to Humanto
+                    </h1>
+                    <p class="text-warm-600 text-sm mt-1.5" id="form-subheading">
+                        Enter your details to access your employee portal
+                    </p>
+                </div>
+
+                <!-- Authentication Mode Tabs Switcher -->
+                <div class="bg-warm-100/80 p-1 rounded-2xl flex items-center mb-6 border border-warm-200/50 text-xs sm:text-sm font-semibold">
+                    <button id="tab-signin" type="button" onclick="switchTab('signin')" 
+                            class="flex-1 py-2 px-3 rounded-xl transition-all duration-200 bg-white text-warm-900 shadow-sm">
+                        Sign In
+                    </button>
+                    <button id="tab-signup" type="button" onclick="switchTab('signup')" 
+                            class="flex-1 py-2 px-3 rounded-xl transition-all duration-200 text-warm-600 hover:text-warm-900">
+                        Create Account
+                    </button>
+                    <button id="tab-magic" type="button" onclick="switchTab('magic')" 
+                            class="flex-1 py-2 px-3 rounded-xl transition-all duration-200 text-warm-600 hover:text-warm-900 flex items-center justify-center gap-1">
+                        <i class="ph ph-sparkle text-brand-coral"></i>
+                        Magic Link
+                    </button>
+                </div>
+
+                <!-- Single Sign-On (SSO) Buttons Container -->
+                <div id="sso-container" class="space-y-2.5 mb-6">
+                    <!-- Google Sign In -->
+                    <button type="button" onclick="handleSSO('Google')" class="w-full h-11 bg-white hover:bg-warm-50 border border-warm-200/90 hover:border-warm-300 text-warm-800 font-medium text-sm rounded-xl px-4 flex items-center justify-center gap-3 transition-all duration-200 shadow-sm active:scale-[0.99]">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+
+                    <!-- Microsoft Sign In -->
+                    <button type="button" onclick="handleSSO('Microsoft')" class="w-full h-11 bg-white hover:bg-warm-50 border border-warm-200/90 hover:border-warm-300 text-warm-800 font-medium text-sm rounded-xl px-4 flex items-center justify-center gap-3 transition-all duration-200 shadow-sm active:scale-[0.99]">
+                        <svg class="w-4 h-4" viewBox="0 0 23 23">
+                            <path fill="#f35325" d="M1 1h10v10H1z"/>
+                            <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                            <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                            <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                        </svg>
+                        <span>Continue with Microsoft</span>
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <div id="divider-container" class="relative my-6 flex items-center justify-center">
+                    <div class="border-t border-warm-200/80 w-full"></div>
+                    <span class="bg-white/90 px-3 text-xs uppercase tracking-wider text-warm-600 font-semibold absolute rounded-full border border-warm-200/40 py-0.5">
+                        or email
+                    </span>
+                </div>
+
+                <!-- Main Authentication Form -->
+                <form id="auth-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    
+                    <!-- Name Field (Only visible for Signup) -->
+                    <div id="field-name" class="hidden">
+                        <label for="input-name" class="block text-xs font-semibold text-warm-700 uppercase tracking-wider mb-1.5">
+                            Full Name
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="input-name" placeholder="Alex Morgan" 
+                                   class="input-styled w-full h-11 px-3.5 pl-10 rounded-xl bg-warm-50/80 border border-warm-200 text-sm text-warm-900 placeholder:text-warm-600 focus:outline-none focus:bg-white">
+                            <i class="ph ph-user absolute left-3.5 top-1/2 -translate-y-1/2 text-warm-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="input-email" class="block text-xs font-semibold text-warm-700 uppercase tracking-wider mb-1.5">
+                            Work Email
+                        </label>
+                        <div class="relative">
+                            <input type="email" id="input-email" required placeholder="alex@company.com" 
+                                   class="input-styled w-full h-11 px-3.5 pl-10 rounded-xl bg-warm-50/80 border border-warm-200 text-sm text-warm-900 placeholder:text-warm-600 focus:outline-none focus:bg-white">
+                            <i class="ph ph-envelope-simple absolute left-3.5 top-1/2 -translate-y-1/2 text-warm-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password Field (Hidden in Magic Link mode) -->
+                    <div id="field-password">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label for="input-password" class="block text-xs font-semibold text-warm-700 uppercase tracking-wider">
+                                Password
+                            </label>
+                            <a href="#" id="link-forgot" onclick="triggerForgotPassword(event)" class="text-xs font-semibold text-brand-coral hover:text-brand-terracotta transition-colors">
+                                Forgot?
+                            </a>
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="input-password" required placeholder="••••••••••••" 
+                                   oninput="checkPasswordStrength(this.value)"
+                                   class="input-styled w-full h-11 px-3.5 pl-10 pr-10 rounded-xl bg-warm-50/80 border border-warm-200 text-sm text-warm-900 placeholder:text-warm-600 focus:outline-none focus:bg-white">
+                            <i class="ph ph-lock-simple absolute left-3.5 top-1/2 -translate-y-1/2 text-warm-600 text-base"></i>
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-warm-600 hover:text-warm-800 transition-colors">
+                                <i id="toggle-password-icon" class="ph ph-eye text-base"></i>
+                            </button>
+                        </div>
+
+                        <!-- Dynamic Password Strength Indicator (Signup Mode) -->
+                        <div id="strength-meter" class="hidden mt-2 space-y-1">
+                            <div class="flex h-1.5 w-full bg-warm-200 rounded-full overflow-hidden gap-1 p-0.5">
+                                <div id="meter-1" class="h-full w-1/3 rounded-full bg-warm-300 transition-all duration-300"></div>
+                                <div id="meter-2" class="h-full w-1/3 rounded-full bg-warm-300 transition-all duration-300"></div>
+                                <div id="meter-3" class="h-full w-1/3 rounded-full bg-warm-300 transition-all duration-300"></div>
+                            </div>
+                            <p id="meter-text" class="text-[11px] text-warm-600 font-medium">Enter a strong password</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Controls: Remember Me -->
+                    <div id="field-remember" class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2.5 cursor-pointer group">
+                            <div class="relative flex items-center">
+                                <input type="checkbox" id="checkbox-remember" class="peer sr-only">
+                                <div class="w-4 h-4 rounded border border-warm-300 bg-warm-50 peer-checked:bg-warm-900 peer-checked:border-warm-900 transition-all"></div>
+                                <i class="ph ph-check text-white text-xs absolute left-0.5 opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                            </div>
+                            <span class="text-xs font-medium text-warm-700 group-hover:text-warm-900 transition-colors">Remember this device</span>
+                        </label>
+                    </div>
+
+                    <!-- Interactive Security Check Widget -->
+                    <div class="pt-2">
+                        <div id="security-widget" class="bg-warm-100/60 border border-warm-200 rounded-2xl p-3 select-none transition-all">
+                            <div class="flex items-center justify-between text-xs mb-2">
+                                <span class="font-semibold text-warm-700 flex items-center gap-1.5">
+                                    <i class="ph ph-shield-check text-emerald-600 text-sm"></i> Human Verification
+                                </span>
+                                <span id="security-status" class="text-[11px] text-warm-600">Press & hold to verify</span>
+                            </div>
+                            <!-- Hold progress button -->
+                            <button type="button" id="hold-btn" 
+                                    onmousedown="startHold()" onmouseup="endHold()" onmouseleave="endHold()"
+                                    ontouchstart="startHold()" ontouchend="endHold()"
+                                    class="w-full h-9 bg-white border border-warm-200/90 rounded-xl relative overflow-hidden flex items-center justify-center font-semibold text-xs text-warm-700 hover:bg-warm-50 transition-colors">
+                                <!-- Fill bar animation -->
+                                <div id="hold-progress" class="absolute left-0 top-0 bottom-0 bg-emerald-100 border-r border-emerald-400 w-0 transition-all ease-linear"></div>
+                                <span id="hold-label" class="relative z-10 flex items-center gap-1.5">
+                                    <i class="ph ph-hand-tap text-sm"></i> Hold for 1 second
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submit-btn" disabled 
+                            class="w-full h-11 mt-2 bg-warm-900 hover:bg-warm-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl shadow-btn transition-all duration-200 flex items-center justify-center gap-2 group active:scale-[0.99]">
+                        <span id="submit-btn-text">Sign In</span>
+                        <i class="ph ph-arrow-right text-base group-hover:translate-x-0.5 transition-transform"></i>
+                    </button>
+
+                    <button type="button" id="logoutBtn"
+                   
+                    >Logout</button>
+                    
+                </form>
+                
+                <!-- Footer Terms Link inside Card -->
+                <p class="text-center text-[11px] text-warm-600 mt-6 leading-relaxed">
+                    By signing in, you agree to Humanto’s 
+                    <a href="#" class="underline hover:text-warm-900 transition-colors">Terms of Service</a> 
+                    and 
+                    <a href="#" class="underline hover:text-warm-900 transition-colors">Privacy Policy</a>.
+                </p>
+
+            </div>
+
+            <!-- SSO Security Badge underneath -->
+            <div class="mt-6 text-center flex items-center justify-center gap-4 text-xs text-warm-600">
+                <span class="flex items-center gap-1.5">
+                    <i class="ph ph-lock text-sm text-warm-600"></i> 256-bit SSL Encrypted
+                </span>
+                <span class="w-1 h-1 rounded-full bg-warm-300"></span>
+                <span class="flex items-center gap-1.5">
+                    <i class="ph ph-seal-check text-sm text-warm-600"></i> SOC2 Type II Certified
+                </span>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer copyright -->
+    <footer class="relative z-10 w-full text-center py-4 text-xs text-warm-600 font-medium">
+        © 2026 Humanto Inc. All rights reserved.
+    </footer>
+
+    <script></script>
+    <script src="login.js"></script>
+</body>
+</html>
